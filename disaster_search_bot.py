@@ -2,10 +2,14 @@ import requests
 import re
 from flask import Flask, request, jsonify
 from groq import Groq
+from dotenv import load_dotenv
+import os
 
-# Set your API keys
-SERP_API_KEY = "e29f4486037340231450260830cc0cac088cb135df46ef40caa2da70b6e2e5d3"
-GROQ_API_KEY = "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"
+load_dotenv()
+
+# Get API keys from environment variables
+SERP_API_KEY = os.getenv("SERP_API_KEY")
+GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 client = Groq(api_key=GROQ_API_KEY)
 
 # ---- Function: Search Web via SerpAPI ----
