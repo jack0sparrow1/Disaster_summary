@@ -10,7 +10,25 @@ load_dotenv()
 # Get API keys from environment variables
 SERP_API_KEY = os.getenv("SERP_API_KEY")
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
-client = Groq(api_key=GROQ_API_KEY)
+def get_groq_summary(prompt):
+    url = "https://api.groq.com/openai/v1/chat/completions"
+    headers = {
+        "Authorization": f"Bearer {GROQ_API_KEY}",
+        "Content-Type": "application/json"
+    }
+    payload = {
+        "model": "llama3-70b-8192",
+        "messages": [{"role": "user", "content": prompt}],
+        "temperature": 0.5
+    }
+
+    try:
+        response = requests.post(url, json=payload, headers=headers)
+        response.raise_for_status()
+        return response.json()["choices"][0]["message"]["content"].strip()
+    except Exception as e:
+        return f"Groq Error while summarizing: {str(e)}"
+
 
 # ---- Function: Search Web via SerpAPI ----
 def search_disaster_topic(query):
@@ -71,12 +89,8 @@ Search Results:
 """
 
     try:
-        response = client.chat.completions.create(
-            model="llama3-70b-8192",
-            messages=[{"role": "user", "content": prompt}],
-            temperature=0.5
-        )
-        return response.choices[0].message.content.strip()
+        return get_groq_summary(prompt)
+
     except Exception as e:
         return f"Groq Error while summarizing: {str(e)}"
 
