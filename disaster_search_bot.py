@@ -4,6 +4,11 @@ from flask import Flask, request, jsonify
 from groq import Groq
 from dotenv import load_dotenv
 import os
+from flask_cors import CORS  # ← Add this
+
+app = Flask(__name__)
+CORS(app)  # ← Add this to enable CORS
+
 
 load_dotenv()
 
