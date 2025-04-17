@@ -7,6 +7,7 @@ import os
 from flask_cors import CORS  # ← Add this
 
 app = Flask(__name__)
+
 CORS(app)  # ← Add this to enable CORS
 
 
@@ -99,8 +100,6 @@ Search Results:
     except Exception as e:
         return f"Groq Error while summarizing: {str(e)}"
 
-# ---- Flask Setup ----
-app = Flask(__name__)
 
 @app.route('/get_disaster_summary', methods=['POST'])
 def get_disaster_summary():
